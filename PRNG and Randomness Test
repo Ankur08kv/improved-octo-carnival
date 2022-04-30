@@ -1,0 +1,80 @@
+def linearCongruentialMethod(Xo, m, a, c,
+ randomNums,
+ noOfRandomNums):
+ # Initialize the seed state
+ randomNums[0] = Xo
+ # numbers of random numbers
+ for i in range(1, noOfRandomNums):
+ 
+ randomNums[i] = ((randomNums[i - 1] * a) +
+ c) % m
+if __name__ == '__main__':
+ 
+ # Seed value
+ Xo = 10
+ # Modulus parameter
+ m = 13
+ # Multiplier term
+ a = 5
+ # Increment term
+ c = 5
+ # Number of Random numbers
+ # to be generated
+ noOfRandomNums = 15
+ # To store random numbers
+ randomNums = [0] * (noOfRandomNums)
+ linearCongruentialMethod(Xo, m, a, c,
+ randomNums,
+ noOfRandomNums)
+ # Print the generated random numbers
+ for i in randomNums:
+ print(i, end = " ")
+
+**Randomness test 1: Runs Test on Linear Congruential Method**
+
+import random
+import math
+import statistics
+def runsTest(l, l_median):
+runs, n1, n2 = 0, 0, 0
+# Checking for start of new run
+for i in range(len(l)):
+ # no. of runs
+ if (l[i] >= l_median and l[i-1] < l_median) or \
+ (l[i] < l_median and l[i-1] >= l_median):
+ runs += 1
+# no. of positive values
+ if(l[i]) >= l_median:
+ n1 += 1
+# no. of negative values
+ else:
+ n2 += 1
+runs_exp = ((2*n1*n2)/(n1+n2))+1
+stan_dev = math.sqrt((2*n1*n2*(2*n1*n2-n1-n2))/ \
+(((n1+n2)**2)*(n1+n2-1)))
+z = (runs-runs_exp)/stan_dev
+return z
+l = []
+for i in range(len(randomNums)):
+l.append(randomNums[i]/31)
+l_median= statistics.median(l)
+Z = abs(runsTest(l, l_median))
+print('Test Results: ')
+print('Z-statistic= ', Z)
+
+**Randomness test 1: KS Test on Linear Congruential Method**
+
+from scipy.stats import kstest
+import random
+N = len(randomNums)
+actual =[]
+for i in range(N):
+actual.append(randomNums[i]/31)
+print('Normalized sequence of Random Numbers: ')
+print()
+print(actual)
+print()
+x = kstest(actual, "uniform")
+print('Test Result: ')
+print()
+print(x)
